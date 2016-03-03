@@ -1,102 +1,87 @@
 if !1 | finish | endif
 
-if has('vim_starting')
-        set nocompatible
-        set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-
 augroup vimrc
   autocmd!
 augroup END
 
+if &compatible
+  set nocompatible
+endif
 
-"-----------
-" neobundle
-"-----------
+set runtimepath^=~/dein/repos/github.com/Shougo/dein.vim
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+call dein#begin(expand('~/dein'))
 
-NeoBundleFetch 'Shougo/neobundle.vim'
+call dein#add('Shougo/dein.vim')
 
-" Shougo bundlers here
-NeoBundle 'Shougo/neocomplete.vim'
-" NeoBundle 'Shougo/neosnippet'
-" NeoBundle 'Shougo/neosnippet-snippets'
-" NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make -f make_mac.mak',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
-\ }
+" Add or remove your plugins here:
+call dein#add('Shougo/neosnippet.vim')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('Shougo/unite-outline')
+call dein#add('Shougo/vimproc.vim', { 'build': { 'mac': 'make' } })
+call dein#add('Shougo/unite.vim')
 
-" utility bundlers here
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'Townk/vim-autoclose'
-NeoBundle 'scrooloose/nerdtree'
+" Utility plugins here:
+call dein#add('bronson/vim-trailing-whitespace')
+call dein#add('junegunn/vim-easy-align')
+call dein#add('terryma/vim-multiple-cursors')
+call dein#add('Townk/vim-autoclose')
+call dein#add('scrooloose/nerdtree')
 
 " Markdown
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
+call dein#add('plasticboy/vim-markdown')
+call dein#add('kannokanno/previm')
+call dein#add('tyru/open-browser.vim')
 
 " C++
-NeoBundle 'octol/vim-cpp-enhanced-highlight'
+call dein#add('octol/vim-cpp-enhanced-highlight')
 
 " Haskell bundlers here
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'yogsototh/haskell-vim'
-NeoBundle 'eagletmt/neco-ghc'
-NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'Twinside/vim-hoogle'
-NeoBundle 'pbrisbin/html-template-syntax'
+call dein#add('scrooloose/syntastic')
+call dein#add('yogsototh/haskell-vim')
+call dein#add('eagletmt/neco-ghc')
+call dein#add('eagletmt/ghcmod-vim')
+call dein#add('Twinside/vim-hoogle')
+call dein#add('pbrisbin/html-template-syntax')
 
 " Ruby bundlers here
-NeoBundle 'todesking/ruby_hl_lvar.vim'
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'rhysd/vim-textobj-ruby'
-NeoBundle 'vim-ruby/vim-ruby'
-
-" Scala bundlers here
-NeoBundle 'derekwyatt/vim-scala'
-
-" Jade bundlers here
-NeoBundle 'digitaltoad/vim-jade'
+call dein#add('todesking/ruby_hl_lvar.vim')
+call dein#add('kana/vim-textobj-user')
+call dein#add('rhysd/vim-textobj-ruby')
+call dein#add('vim-ruby/vim-ruby')
 
 " Javascript bundlers here
-NeoBundle 'isRuslan/vim-es6'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'mattn/jscomplete-vim'
+call dein#add('isRuslan/vim-es6')
+call dein#add('scrooloose/syntastic')
+call dein#add('mattn/jscomplete-vim')
 
 " NodeJS bundlers here
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'myhere/vim-nodejs-complete'
-NeoBundle 'moll/vim-node'
+call dein#add('thinca/vim-quickrun')
+call dein#add('myhere/vim-nodejs-complete')
+call dein#add('moll/vim-node')
 
 " JSON bundlers here
-NeoBundle 'elzr/vim-json'
+call dein#add('elzr/vim-json')
 
 " TypeScript bundlers here
-NeoBundle 'leafgarland/typescript-vim'
-NeoBundle 'Quramy/tsuquyomi'
+call dein#add('leafgarland/typescript-vim')
+call dein#add('Quramy/tsuquyomi')
 
 " JSX bundlers here
-NeoBundle 'mxw/vim-jsx'
+call dein#add('mxw/vim-jsx')
 
 " HTML bundlers here
-NeoBundle 'othree/html5.vim'
+call dein#add('othree/html5.vim')
 
-call neobundle#end()
-
-NeoBundleCheck
-
+call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+call dein#end()
 
 filetype plugin indent on
+
+if dein#check_install()
+  call dein#install()
+endif
+
 syntax enable
 
 "--------
@@ -128,31 +113,31 @@ au BufRead,BufNewFile *.md set filetype=markdown
 " Haskell
 "---------
 
-let mapleader="-"
-let g:mapleader="-"
-set tm=2000
-nmap <silent> <leader>ht :GhcModType<CR>
-nmap <silent> <leader>hh :GhcModTypeClear<CR>
-nmap <silent> <leader>hT :GhcModTypeInsert<CR>
-nmap <silent> <leader>hc :SyntasticCheck ghc_mod<CR>:lopen<CR>
-let g:syntastic_mode_map={'mode' : 'active', 'passive_filetypes' : ['haskell']}
-let g:syntastic_always_populate_loc_list = 1
-nmap <silent> <leader>hl :SyntasticCheck hlint<CR>:lopen<CR>
+"let mapleader="-"
+"let g:mapleader="-"
+"set tm=2000
+"nmap <silent> <leader>ht :GhcModType<CR>
+"nmap <silent> <leader>hh :GhcModTypeClear<CR>
+"nmap <silent> <leader>hT :GhcModTypeInsert<CR>
+"nmap <silent> <leader>hc :SyntasticCheck ghc_mod<CR>:lopen<CR>
+"let g:syntastic_mode_map={'mode' : 'active', 'passive_filetypes' : ['haskell']}
+"let g:syntastic_always_populate_loc_list = 1
+"nmap <silent> <leader>hl :SyntasticCheck hlint<CR>:lopen<CR>
 
-" Auto-checking on writing
-autocmd BufWritePost *.hs,*.lhs GhcModCheckAndLintAsync
+"" Auto-checking on writing
+"autocmd BufWritePost *.hs,*.lhs GhcModCheckAndLintAsync
 
-"  neocomplcache (advanced completion)
-autocmd BufEnter *.hs,*.lhs let g:neocomplcache_enable_at_startup = 1
-function! SetToCabalBuild()
-    if glob("*.cabal") != ''
-        set makeprg=cabal\ build
-    endif
-endfunction
-autocmd BufEnter *.hs,*.lhs :call SetToCabalBuild()
+""  neocomplcache (advanced completion)
+"autocmd BufEnter *.hs,*.lhs let g:neocomplcache_enable_at_startup = 1
+"function! SetToCabalBuild()
+"    if glob("*.cabal") != ''
+"        set makeprg=cabal\ build
+"    endif
+"endfunction
+"autocmd BufEnter *.hs,*.lhs :call SetToCabalBuild()
 
-" -- neco-ghc
-let $PATH=$PATH.':'.expand("~/.cabal/bin")
+"" -- neco-ghc
+"let $PATH=$PATH.':'.expand("~/.cabal/bin")
 
 
 "-----------
@@ -203,7 +188,6 @@ autocmd FileType json setl conceallevel=0
 " configure
 "-----------
 
-set nocompatible
 set clipboard=unnamed
 set number
 set hidden
